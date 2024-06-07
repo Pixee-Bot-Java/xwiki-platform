@@ -19,6 +19,7 @@
  */
 package org.xwiki.filter.xar.internal.input;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -67,7 +68,7 @@ import org.xwiki.xml.stax.StAXUtils;
 @InstantiationStrategy(ComponentInstantiationStrategy.PER_LOOKUP)
 public class DocumentLocaleReader extends AbstractReader
 {
-    private static final XMLInputFactory XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+    private static final XMLInputFactory XML_INPUT_FACTORY = hardenFactory(XMLInputFactory.newInstance());
 
     @Inject
     @Named("relative")
