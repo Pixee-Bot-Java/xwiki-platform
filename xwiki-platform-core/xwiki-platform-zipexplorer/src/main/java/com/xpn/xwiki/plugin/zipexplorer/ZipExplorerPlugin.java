@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.plugin.zipexplorer;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.ByteArrayInputStream;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -138,7 +139,7 @@ public class ZipExplorerPlugin extends XWikiDefaultPlugin
                 return attachment;
             }
 
-            ZipInputStream zis = new ZipInputStream(stream);
+            ZipInputStream zis = ZipSecurity.createHardenedInputStream(stream);
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
@@ -188,7 +189,7 @@ public class ZipExplorerPlugin extends XWikiDefaultPlugin
             stream = new ByteArrayInputStream(attachment.getContent());
 
             if (isZipFile(stream)) {
-                ZipInputStream zis = new ZipInputStream(stream);
+                ZipInputStream zis = ZipSecurity.createHardenedInputStream(stream);
                 ZipEntry entry;
                 while ((entry = zis.getNextEntry()) != null) {
                     zipList.add(entry.getName());
