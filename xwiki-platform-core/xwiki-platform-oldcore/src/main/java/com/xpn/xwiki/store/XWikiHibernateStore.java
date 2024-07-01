@@ -391,7 +391,7 @@ public class XWikiHibernateStore extends XWikiHibernateBaseStore implements XWik
         if (!context.isMainWiki(wikiName)) {
             NativeQuery<Object[]> selectQuery = session.createNativeQuery(
                 "select DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME from INFORMATION_SCHEMA.SCHEMATA"
-                    + " where SCHEMA_NAME='" + getSchemaFromWikiName(context.getMainXWiki(), context) + "'");
+                    + " where SCHEMA_NAME=:parameter0").setParameter(":parameter0", getSchemaFromWikiName(context.getMainXWiki(), context));
             Object[] queryResult = selectQuery.uniqueResult();
             if (queryResult != null) {
                 charset = (String) queryResult[0];
