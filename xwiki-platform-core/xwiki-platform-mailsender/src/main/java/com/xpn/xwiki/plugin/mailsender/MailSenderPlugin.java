@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.plugin.mailsender;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -404,17 +405,17 @@ public class MailSenderPlugin extends XWikiDefaultPlugin
             PrintWriter output = new PrintWriter(result);
             boolean headersFound = false;
 
-            line = input.readLine();
+            line = BoundedLineReader.readLine(input, 5_000_000);
             // Additional headers are at the start. Parse them and put them in the Mail object.
             // Warning: no empty lines are allowed before the headers.
             Matcher m = SMTP_HEADER.matcher(line);
             while (line != null && m.matches()) {
                 String header = m.group(1);
                 String value = m.group(2);
-                line = input.readLine();
+                line = BoundedLineReader.readLine(input, 5_000_000);
                 while (line != null && (line.startsWith(" ") || line.startsWith("\t"))) {
                     value += line;
-                    line = input.readLine();
+                    line = BoundedLineReader.readLine(input, 5_000_000);
                 }
                 if (header.equals(SUBJECT)) {
                     toMail.setSubject(value);
@@ -431,7 +432,7 @@ public class MailSenderPlugin extends XWikiDefaultPlugin
 
             // There should be one empty line here, separating the body from the headers.
             if (headersFound && line != null && StringUtils.isBlank(line)) {
-                line = input.readLine();
+                line = BoundedLineReader.readLine(input, 5_000_000);
             } else {
                 if (headersFound) {
                     LOGGER.warn("Mail body does not contain an empty line between the headers and the body.");
@@ -447,7 +448,7 @@ public class MailSenderPlugin extends XWikiDefaultPlugin
             do {
                 // Mails always use \r\n as EOL
                 output.print(line + "\r\n");
-            } while ((line = input.readLine()) != null);
+            } while ((line = BoundedLineReader.readLine(input, 5_000_000)) != null);
 
             toMail.setTextPart(result.toString());
         } catch (IOException ioe) {
