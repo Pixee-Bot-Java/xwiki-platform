@@ -46,6 +46,7 @@
       org.xwiki.contrib:authservice-backport-api,
       org.xwiki.contrib:authservice-backport-default
     </xwiki.platform.oldcore.extension.features>
+    <versions.java-security-toolkit>1.2.0</versions.java-security-toolkit>
   </properties>
   <build>
     <pluginManagement>
@@ -380,4 +381,14 @@
       </build>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.pixee</groupId>
+        <artifactId>java-security-toolkit</artifactId>
+        
+        <version>${versions.java-security-toolkit}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

@@ -20,6 +20,7 @@
 
 package com.xpn.xwiki.store.migration.hibernate;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -115,7 +116,7 @@ public class R35100XWIKI7564DataMigration extends AbstractHibernateDataMigration
                     new InputStreamReader(this.getClass().getResourceAsStream("R35100XWIKI7564.sql"),
                         StandardCharsets.UTF_8))) {
                     String line;
-                    while ((line = in.readLine()) != null) {
+                    while ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
                         stmt.addBatch(line);
                     }
                 }

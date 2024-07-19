@@ -19,6 +19,7 @@
  */
 package org.xwiki.webjars.internal;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -152,7 +153,7 @@ public class FilesystemResourceReferenceCopier
         // Limitation: we only support url() constructs located on a single line
         try (BufferedReader br = new BufferedReader(new InputStreamReader(jar.getInputStream(entry), "UTF-8"))) {
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
                 Matcher matcher = URL_PATTERN.matcher(line);
                 while (matcher.find()) {
                     String url = matcher.group(1);
