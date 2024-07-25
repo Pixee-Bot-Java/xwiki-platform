@@ -20,6 +20,7 @@
 
 package com.xpn.xwiki.plugin.fileupload;
 
+import io.github.pixee.security.Filenames;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -394,7 +395,7 @@ public class FileUploadPlugin extends XWikiDefaultPlugin
         FileItem fileitem = getFile(formfieldName, context);
 
         // We need to strip the file path. See http://commons.apache.org/fileupload/faq.html#whole-path-from-IE
-        return (fileitem == null) ? null : FilenameUtils.getName(fileitem.getName());
+        return (fileitem == null) ? null : FilenameUtils.getName(Filenames.toSimpleFileName(fileitem.getName()));
     }
 
     /**

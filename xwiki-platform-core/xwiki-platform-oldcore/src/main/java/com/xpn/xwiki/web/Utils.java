@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.Filenames;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -349,7 +350,7 @@ public class Utils
     {
         for (FileItem item : filelist) {
             if (name.equals(item.getFieldName())) {
-                return item.getName();
+                return Filenames.toSimpleFileName(item.getName());
             }
         }
 
