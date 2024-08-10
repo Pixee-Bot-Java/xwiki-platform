@@ -19,6 +19,7 @@
  */
 package org.xwiki.resource.servlet;
 
+import io.github.pixee.security.Newlines;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -250,7 +251,7 @@ public abstract class AbstractServletResourceReferenceHandler<R extends Resource
             } catch (UnsupportedEncodingException e) {
                 // Shouldn't happen.
             }
-            httpResponse.setHeader("Content-Disposition", ";filename*=utf-8''" + fileName);
+            httpResponse.setHeader("Content-Disposition", Newlines.stripAll(";filename*=utf-8''" + fileName));
         }
     }
 

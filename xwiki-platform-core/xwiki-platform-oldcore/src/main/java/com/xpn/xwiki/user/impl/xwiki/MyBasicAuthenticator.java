@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.user.impl.xwiki;
 
+import io.github.pixee.security.Newlines;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -226,7 +227,7 @@ public class MyBasicAuthenticator extends BasicAuthenticator implements XWikiAut
         request.getSession().setAttribute(LOGIN_ATTEMPTS, loginAttempts);
 
         if (loginAttempts <= MAX_ATTEMPTS) {
-            response.setHeader("WWW-Authenticate", "BASIC realm=\"" + realmName + "\"");
+            response.setHeader("WWW-Authenticate", Newlines.stripAll("BASIC realm=\"" + realmName + "\""));
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             request.getSession().removeAttribute(LOGIN_ATTEMPTS);
