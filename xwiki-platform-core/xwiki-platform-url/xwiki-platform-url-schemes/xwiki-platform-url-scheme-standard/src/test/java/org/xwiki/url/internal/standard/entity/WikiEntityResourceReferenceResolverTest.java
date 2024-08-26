@@ -19,6 +19,8 @@
  */
 package org.xwiki.url.internal.standard.entity;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -103,7 +105,7 @@ public class WikiEntityResourceReferenceResolverTest
     {
         when(this.entityReferenceResolver.resolve(expectedReference, expectedEntityType)).thenReturn(
             returnedReference);
-        ExtendedURL extendedURL = new ExtendedURL(new URL(testURL), null);
+        ExtendedURL extendedURL = new ExtendedURL(Urls.create(testURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), null);
         // Remove the resource type segment since this is what gets passed to specific Reference Resolvers.
         extendedURL.getSegments().remove(0);
         EntityResourceReference entityResource =

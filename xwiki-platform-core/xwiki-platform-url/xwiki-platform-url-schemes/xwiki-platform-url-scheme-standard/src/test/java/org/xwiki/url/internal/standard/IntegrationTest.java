@@ -19,6 +19,8 @@
  */
 package org.xwiki.url.internal.standard;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
@@ -171,7 +173,7 @@ public class IntegrationTest
 
     private void assertURL(String url, ResourceType expectedType, ResourceReference expectedReference) throws Exception
     {
-        ExtendedURL extendedURL = new ExtendedURL(new URL(url), "xwiki");
+        ExtendedURL extendedURL = new ExtendedURL(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), "xwiki");
         ResourceType resourceType =
             this.resourceTypeResolver.resolve(extendedURL, Collections.<String, Object>emptyMap());
         assertEquals(expectedType.getId(), resourceType.getId());

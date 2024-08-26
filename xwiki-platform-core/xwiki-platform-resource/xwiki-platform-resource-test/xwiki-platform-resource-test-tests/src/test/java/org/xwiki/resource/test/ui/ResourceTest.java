@@ -19,6 +19,8 @@
  */
 package org.xwiki.resource.test.ui;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 
 import org.junit.Test;
@@ -45,18 +47,18 @@ public class ResourceTest extends AbstractTest
         // The wiki is empty and there's no WYSIWYG so clicking edit will go to the wiki editor
         new ViewPage().edit();
         EditPage ep = new EditPage();
-        assertTrue(new URL(ep.getPageURL()).getPath().endsWith("A/B/WebHome"));
+        assertTrue(Urls.create(ep.getPageURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath().endsWith("A/B/WebHome"));
 
         // Verify that accessing /edit/A/B edits A.B (Nested Documents URL shortcut feature is only for view mode)
         getUtil().gotoPage(getUtil().getURL("edit", new String[] {"A", "B"}, null));
         ep = new EditPage();
-        assertTrue(new URL(ep.getPageURL()).getPath().endsWith("A/B"));
+        assertTrue(Urls.create(ep.getPageURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath().endsWith("A/B"));
 
         // Verify that the spaceRedirect=false query string parameter and value can be used to disable the automatic
         // space redirect
         getUtil().gotoPage(getUtil().getURL("view", new String[] {"A", "B"}, "spaceRedirect=false"));
         new ViewPage().edit();
         ep = new EditPage();
-        assertTrue(new URL(ep.getPageURL()).getPath().endsWith("A/B"));
+        assertTrue(Urls.create(ep.getPageURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getPath().endsWith("A/B"));
     }
 }

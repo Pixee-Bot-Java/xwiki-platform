@@ -19,6 +19,8 @@
  */
 package org.xwiki.url.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -124,7 +126,7 @@ public class DefaultURLSecurityManager implements URLSecurityManager
         if (context.getRequest() != null && context.getRequest().getHttpServletRequest() != null) {
             String request = context.getRequest().getHttpServletRequest().getRequestURL().toString();
             try {
-                URL requestURL = new URL(request);
+                URL requestURL = Urls.create(request, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 return requestURL.getHost();
             } catch (MalformedURLException e) {
                 // this should never happen

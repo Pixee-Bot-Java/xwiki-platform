@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.pdf.impl;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -356,7 +358,7 @@ public class PdfExportImpl implements PdfExport
             XHTMLDocument document = (XHTMLDocument) reader.read(source);
 
             // Set the base URL so that CSS4J can resolve URLs in CSS. Use the current document in the XWiki Context
-            document.setBaseURL(new URL(context.getDoc().getExternalURL("view", context)));
+            document.setBaseURL(Urls.create(context.getDoc().getExternalURL("view", context), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
 
             // Apply the style sheet.
             document.addStyleSheet(new io.sf.carte.doc.style.css.nsac.InputSource(new StringReader(css)));

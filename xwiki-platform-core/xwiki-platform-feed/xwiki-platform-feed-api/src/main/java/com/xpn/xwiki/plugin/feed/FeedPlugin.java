@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.plugin.feed;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -282,7 +284,7 @@ public class FeedPlugin extends XWikiDefaultPlugin implements XWikiPluginInterfa
     public SyndFeed getFeedForce(String sfeed, boolean ignoreInvalidFeeds, XWikiContext context) throws IOException
     {
         try {
-            URL feedURL = new URL(sfeed);
+            URL feedURL = Urls.create(sfeed, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             XWikiFeedFetcher feedFetcher = new XWikiFeedFetcher();
             feedFetcher.setUserAgent(context.getWiki().Param("xwiki.plugins.feed.useragent",
                 context.getWiki().getHttpUserAgent(context)));

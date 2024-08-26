@@ -19,6 +19,8 @@
  */
 package org.xwiki.security.authentication.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -233,7 +235,7 @@ public class DefaultResetPasswordManager implements ResetPasswordManager
                 extendedURL = this.resourceReferenceSerializer.serialize(resourceReference);
                 extendedURL = this.urlNormalizer.normalize(extendedURL);
                 URL serverURL = context.getURLFactory().getServerURL(context);
-                URL externalVerificationURL = new URL(serverURL, extendedURL.serialize());
+                URL externalVerificationURL = Urls.create(serverURL, extendedURL.serialize(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
                 this.resetPasswordMailSenderProvider.get()
                     .sendResetPasswordEmail(formattedName, userInformation.userEmail, externalVerificationURL);

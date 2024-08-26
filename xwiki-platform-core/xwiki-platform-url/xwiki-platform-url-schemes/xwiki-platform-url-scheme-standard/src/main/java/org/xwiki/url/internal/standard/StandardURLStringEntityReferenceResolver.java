@@ -19,6 +19,8 @@
  */
 package org.xwiki.url.internal.standard;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -82,7 +84,7 @@ public class StandardURLStringEntityReferenceResolver extends DefaultStringEntit
         XWikiContext xcontext = this.xcontextProvider.get();
         try {
             ExtendedURL extendedURL =
-                new ExtendedURL(new URL(urlStringRepresentation), xcontext.getRequest().getContextPath());
+                new ExtendedURL(Urls.create(urlStringRepresentation, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), xcontext.getRequest().getContextPath());
             ResourceType resourceType = this.typeResolver.resolve(extendedURL, Collections.emptyMap());
             ResourceReference reference =
                 this.resourceResolver.resolve(extendedURL, resourceType, Collections.emptyMap());

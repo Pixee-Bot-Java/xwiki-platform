@@ -19,6 +19,8 @@
  */
 package org.xwiki.export.pdf.test.po;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
@@ -170,7 +172,7 @@ public class PDFExportOptionsModal extends BaseModal
 
         // The browser used for running the test might be on a different machine than the one running XWiki and the test
         // code itself so we can't always use the same URL as the browser to download the PDF file.
-        URL pdfURL = new URL(hostURL, new URL(getDriver().getCurrentUrl()).getFile());
+        URL pdfURL = Urls.create(hostURL, Urls.create(getDriver().getCurrentUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getFile(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         return new PDFDocument(pdfURL, userName, password);
     }
 }

@@ -19,6 +19,8 @@
  */
 package org.xwiki.classloader;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -80,9 +82,9 @@ class AttachmentURLClassLoaderTest
 
         URLStreamHandler attachmentURLStreamHandler =
             this.componentManager.getInstance(ExtendedURLStreamHandler.class, "attachmentjar");
-        cl.addURL(new URL(null, "attachmentjar://page%40filename1", attachmentURLStreamHandler));
+        cl.addURL(Urls.create(null, "attachmentjar://page%40filename1", attachmentURLStreamHandler, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         cl.addURL(new URL("http://some/url"));
-        cl.addURL(new URL(null, "attachmentjar://filename2", attachmentURLStreamHandler));
+        cl.addURL(Urls.create(null, "attachmentjar://filename2", attachmentURLStreamHandler, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
 
         assertEquals(3, cl.getURLs().length);
         assertEquals("attachmentjar://page%40filename1", cl.getURLs()[0].toString());

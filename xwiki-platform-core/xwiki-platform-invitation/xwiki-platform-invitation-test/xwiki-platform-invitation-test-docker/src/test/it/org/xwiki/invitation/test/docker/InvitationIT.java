@@ -19,6 +19,8 @@
  */
 package org.xwiki.invitation.test.docker;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -396,7 +398,7 @@ class InvitationIT
             InspectInvitationsPage inspectPage = getSenderPage().getFooter().inspectAllInvitations();
             InspectInvitationsPage.OneMessage inspect =
                 inspectPage.getMessageWhere("Subject",
-                    String.format("spam has invited you to join %s", new URL(setup.getBaseURL()).getHost()));
+                    String.format("spam has invited you to join %s", Urls.create(setup.getBaseURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getHost()));
             // Prove that the memo left by spam reported is shown.
             String expectedMessage = "Reported as spam with message: It's the email lottery, they have taken over "
                 + "your server!";
@@ -626,7 +628,7 @@ class InvitationIT
             InspectInvitationsPage.OneMessage message = getSenderPage().getFooter().inspectMyInvitations()
                 .getMessageWhere("Subject",
                     String.format("superadmin has invited you to join %s This is a subject line.",
-                        new URL(setup.getBaseURL()).getHost()));
+                        Urls.create(setup.getBaseURL(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getHost()));
 
             InvitationActionConfirmationElement confirm = message.cancel();
 
