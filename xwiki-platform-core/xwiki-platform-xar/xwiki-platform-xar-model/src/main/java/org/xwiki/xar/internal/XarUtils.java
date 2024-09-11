@@ -19,6 +19,7 @@
  */
 package org.xwiki.xar.internal;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -49,7 +50,7 @@ public final class XarUtils
     public static final RelativeStringEntityReferenceResolver RESOLVER =
         new RelativeStringEntityReferenceResolver(new DefaultSymbolScheme());
 
-    private static final XMLInputFactory XML_INPUT_FACTORY = XMLInputFactory.newInstance();
+    private static final XMLInputFactory XML_INPUT_FACTORY = hardenFactory(XMLInputFactory.newInstance());
 
     private XarUtils()
     {

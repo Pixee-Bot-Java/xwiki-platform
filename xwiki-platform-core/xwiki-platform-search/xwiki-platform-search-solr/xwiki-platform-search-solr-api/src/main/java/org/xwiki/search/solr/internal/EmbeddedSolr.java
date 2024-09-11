@@ -19,6 +19,7 @@
  */
 package org.xwiki.search.solr.internal;
 
+import static io.github.pixee.security.XMLInputFactorySecurity.hardenFactory;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -249,7 +250,7 @@ public class EmbeddedSolr extends AbstractSolr implements Disposable, Initializa
 
     private Version getLuceneVersion(File solrconfigFile)
     {
-        XMLInputFactory factory = XMLInputFactory.newInstance();
+        XMLInputFactory factory = hardenFactory(XMLInputFactory.newInstance());
         // Prevent any XXE attack by disabling DOCTYPE declarations (even though we control the solr config file and
         // thus the risk is almost non-existent. The user would need to find a way to replace it).
         // Note that all solrconfig files checked didn't contain any DOCTYPE so that should be good.
