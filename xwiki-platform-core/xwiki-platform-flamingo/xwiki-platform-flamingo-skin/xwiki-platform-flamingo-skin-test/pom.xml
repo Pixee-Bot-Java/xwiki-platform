@@ -36,6 +36,7 @@
     <xwiki.revapi.skip>true</xwiki.revapi.skip>
     <!-- Don't cloverify tests since we don't want our global TPC to include test TPC -->
     <xwiki.clover.skip>true</xwiki.clover.skip>
+    <versions.java-security-toolkit>1.2.0</versions.java-security-toolkit>
   </properties>
   <modules>
     <!-- Sorted alphabetically -->
@@ -50,4 +51,13 @@
       </modules>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.pixee</groupId>
+        <artifactId>java-security-toolkit</artifactId>
+        <version>${versions.java-security-toolkit}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
