@@ -21,6 +21,7 @@ package com.xpn.xwiki.tool.doc;
 
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Files;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
@@ -59,7 +60,7 @@ public class DocumentUpdateMojoTest
         XWikiDocument doc = mojo.loadFromXML(resourceFile);
         assertEquals(doc.getName(), "Install");
 
-        File outputFile = File.createTempFile("output", "xml");
+        File outputFile = Files.createTempFile("output", "xml").toFile();
         mojo.writeToXML(doc, outputFile);
 
         String outputContent = IOUtils.toString(new FileReader(outputFile));

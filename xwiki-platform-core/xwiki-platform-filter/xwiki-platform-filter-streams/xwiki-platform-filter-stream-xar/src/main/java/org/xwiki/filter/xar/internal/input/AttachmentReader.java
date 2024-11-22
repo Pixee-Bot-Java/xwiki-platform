@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -252,7 +253,7 @@ public class AttachmentReader extends AbstractReader implements XARXMLReader<Att
         // Allocate a temporary file in case the attachment content is big
         File temporaryFile;
         try {
-            temporaryFile = File.createTempFile("xar/attachments/attachment", ".bin");
+            temporaryFile = Files.createTempFile("xar/attachments/attachment", ".bin").toFile();
         } catch (IOException e) {
             throw new FilterException(e);
         }
