@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.web;
 
+import static io.github.pixee.security.jakarta.PathValidator.validateDispatcherPath;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -105,7 +106,7 @@ public class ActionFilter implements Filter
                     .anyMatch(it -> Objects.equals(parameter, String.format("action_%s", it)))))
                 {
                     String targetURL = getTargetURL(hrequest, parameter);
-                    RequestDispatcher dispatcher = hrequest.getRequestDispatcher(targetURL);
+                    RequestDispatcher dispatcher = hrequest.getRequestDispatcher(validateDispatcherPath(targetURL));
                     if (dispatcher != null) {
                         LOGGER.debug("Forwarding request to " + targetURL);
                         request.setAttribute(ATTRIBUTE_ACTION_DISPATCHED, "true");
