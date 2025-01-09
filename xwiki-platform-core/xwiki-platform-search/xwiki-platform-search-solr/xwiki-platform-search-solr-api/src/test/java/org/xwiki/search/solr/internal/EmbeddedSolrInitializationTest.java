@@ -19,6 +19,7 @@
  */
 package org.xwiki.search.solr.internal;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -140,7 +141,7 @@ class EmbeddedSolrInitializationTest
         File solrSearchCoreDirectory = new File(solrHomeDirectory, SEARCH_SOLRCORE);
         SolrConfiguration solrConfiguration = this.componentManager.getInstance(SolrConfiguration.class);
         InputStream stream = solrConfiguration.getSearchCoreDefaultContent();
-        try (ZipInputStream zstream = new ZipInputStream(stream)) {
+        try (ZipInputStream zstream = ZipSecurity.createHardenedInputStream(stream)) {
             for (ZipEntry entry = zstream.getNextEntry(); entry != null; entry = zstream.getNextEntry()) {
                 if (entry.isDirectory()) {
                     File destinationDirectory = new File(solrSearchCoreDirectory, entry.getName());
@@ -176,7 +177,7 @@ class EmbeddedSolrInitializationTest
         File solrSearchCoreDirectory = new File(solrHomeDirectory, SEARCH_SOLRCORE);
         SolrConfiguration solrConfiguration = this.componentManager.getInstance(SolrConfiguration.class);
         InputStream stream = solrConfiguration.getSearchCoreDefaultContent();
-        try (ZipInputStream zstream = new ZipInputStream(stream)) {
+        try (ZipInputStream zstream = ZipSecurity.createHardenedInputStream(stream)) {
             for (ZipEntry entry = zstream.getNextEntry(); entry != null; entry = zstream.getNextEntry()) {
                 if (entry.isDirectory()) {
                     File destinationDirectory = new File(solrSearchCoreDirectory, entry.getName());
