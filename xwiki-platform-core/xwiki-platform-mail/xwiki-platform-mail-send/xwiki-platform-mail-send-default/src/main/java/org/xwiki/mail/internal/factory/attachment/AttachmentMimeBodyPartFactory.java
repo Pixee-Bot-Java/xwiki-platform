@@ -20,6 +20,7 @@
 package org.xwiki.mail.internal.factory.attachment;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.Map;
 
 import javax.activation.DataHandler;
@@ -100,7 +101,7 @@ public class AttachmentMimeBodyPartFactory extends AbstractMimeBodyPartFactory<A
     {
         File temporaryAttachmentFile;
         try {
-            temporaryAttachmentFile = File.createTempFile("attachment", ".tmp", this.temporaryDirectory);
+            temporaryAttachmentFile = Files.createTempFile(this.temporaryDirectory.toPath(), "attachment", ".tmp").toFile();
             FileUtils.copyInputStreamToFile(attachment.getContentInputStream(), temporaryAttachmentFile);
 
             // Add a header with the location of the temporary file so that it can be removed when no longer needed so

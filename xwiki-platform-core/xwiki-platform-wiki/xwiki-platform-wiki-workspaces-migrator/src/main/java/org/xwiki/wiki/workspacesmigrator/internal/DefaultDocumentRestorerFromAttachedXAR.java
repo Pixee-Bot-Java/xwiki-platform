@@ -21,6 +21,7 @@ package org.xwiki.wiki.workspacesmigrator.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class DefaultDocumentRestorerFromAttachedXAR implements DocumentRestorerF
 
         // We need to copy the attachment to a temporary file because we want ti use ZipFile
         // instead of ZipArchiveInputStream (see: http://commons.apache.org/proper/commons-compress/zip.html)
-        File tempFile = File.createTempFile(attachmentName, ".tmp");
+        File tempFile = Files.createTempFile(attachmentName, ".tmp").toFile();
         // We copy the content of the attachment
         FileUtils.copyInputStreamToFile(xar.getContentInputStream(xcontext), tempFile);
 
