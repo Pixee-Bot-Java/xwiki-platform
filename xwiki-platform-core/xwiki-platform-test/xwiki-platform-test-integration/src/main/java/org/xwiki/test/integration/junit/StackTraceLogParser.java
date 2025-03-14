@@ -19,6 +19,7 @@
  */
 package org.xwiki.test.integration.junit;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -103,7 +104,7 @@ public class StackTraceLogParser
             StringBuilder buffer = null;
             boolean inStackTrace = false;
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                 if (isStackTracePossible(results, inStackTrace)) {
                     if (isMatchingAtPattern(line)) {
                         // If we're already reading a stack trace then discard, otherwise consider that the previously

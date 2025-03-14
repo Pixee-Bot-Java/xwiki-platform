@@ -20,6 +20,7 @@
 
 package com.xpn.xwiki.plugin.packaging;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -150,14 +151,14 @@ public abstract class AbstractPackageTest
         OutputStreamWriter os = new OutputStreamWriter(ostr, charset);
 
         // Voluntarily ignore the first line... as it's the xml declaration
-        String line = bfr.readLine();
+        String line = BoundedLineReader.readLine(bfr, 5_000_000);
         os.append("<?xml version=\"1.0\" encoding=\"" + charset + "\"?>\n");
 
-        line = bfr.readLine();
+        line = BoundedLineReader.readLine(bfr, 5_000_000);
         while (null != line) {
             os.append(line);
             os.append("\n");
-            line = bfr.readLine();
+            line = BoundedLineReader.readLine(bfr, 5_000_000);
         }
         os.flush();
         os.close();

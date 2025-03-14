@@ -19,6 +19,7 @@
  */
 package org.xwiki.test.webstandards;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -198,7 +199,7 @@ public class RSSValidationTest extends AbstractValidationTest
             System.err.println("Validated content:");
             BufferedReader reader = new BufferedReader(new StringReader(new String(responseBody)));
             int index = 1;
-            for (String line = reader.readLine(); line != null; line = reader.readLine(), ++index) {
+            for (String line = BoundedLineReader.readLine(reader, 5_000_000); line != null; line = BoundedLineReader.readLine(reader, 5_000_000), ++index) {
                 System.err.println(index + "\t" + line);
             }
         }

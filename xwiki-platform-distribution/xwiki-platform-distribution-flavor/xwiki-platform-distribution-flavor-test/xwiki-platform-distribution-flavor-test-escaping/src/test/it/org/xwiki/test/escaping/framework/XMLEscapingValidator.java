@@ -19,6 +19,7 @@
  */
 package org.xwiki.test.escaping.framework;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,7 +94,7 @@ public class XMLEscapingValidator implements Validator
         String line;
         this.document = new ArrayList<String>();
         try {
-            while ((line = reader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                 this.document.add(line);
             }
         } catch (IOException exception) {

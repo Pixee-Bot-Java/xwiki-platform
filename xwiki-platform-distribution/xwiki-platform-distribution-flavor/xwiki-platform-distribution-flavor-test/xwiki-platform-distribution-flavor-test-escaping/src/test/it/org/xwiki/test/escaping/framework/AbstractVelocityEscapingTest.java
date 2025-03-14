@@ -19,6 +19,7 @@
  */
 package org.xwiki.test.escaping.framework;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -87,7 +88,7 @@ public abstract class AbstractVelocityEscapingTest extends AbstractAutomaticTest
                                         + "\\b(language)\\b");
         try {
             String line;
-            while ((line = data.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(data, 5_000_000)) != null) {
                 Matcher match = pattern.matcher(line);
                 while (match.find()) {
                     for (int i = 1; i <= match.groupCount(); i++) {
