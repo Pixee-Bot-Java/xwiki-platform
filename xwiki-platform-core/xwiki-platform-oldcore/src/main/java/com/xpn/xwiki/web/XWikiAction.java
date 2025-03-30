@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -1159,7 +1161,7 @@ public abstract class XWikiAction implements LegacyAction
                     // Space. Then generate the URL for it and forward to it
                     SpaceReference spaceReference = new SpaceReference(reference.getName(), reference.getParent());
                     // Extract the anchor
-                    String anchor = new URL(context.getRequest().getRequestURL().toString()).getRef();
+                    String anchor = Urls.create(context.getRequest().getRequestURL().toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getRef();
                     URL forwardURL = urlf.createURL(getLocalSerializer().serialize(spaceReference), defaultDocumentName,
                         action, context.getRequest().getQueryString(), anchor,
                         spaceReference.getWikiReference().getName(), context);

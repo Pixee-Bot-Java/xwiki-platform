@@ -19,6 +19,8 @@
  */
 package org.xwiki.export.pdf.browser;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -200,7 +202,7 @@ public abstract class AbstractBrowserPDFPrinter implements PDFPrinter<URL>
     private Optional<String> getBrowserIPAddress(URL targetURL, BrowserTab browserTab)
     {
         try {
-            URL restURL = new URL(targetURL, getRequest().getContextPath() + "/rest/client?media=json");
+            URL restURL = Urls.create(targetURL, getRequest().getContextPath() + "/rest/client?media=json", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             if (browserTab.navigate(restURL)) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 String browserIPAddress = objectMapper.readTree(browserTab.getSource()).path("ip").asText();

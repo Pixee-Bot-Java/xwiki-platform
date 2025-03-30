@@ -19,6 +19,8 @@
  */
 package org.xwiki.localization.jar.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -62,6 +64,6 @@ public class JARFileTranslationBundle extends AbstractURLResourceTranslationBund
      */
     private static URL getURL(File jarFile) throws IOException
     {
-        return new URL("jar:" + jarFile.toURI() + "!/" + TRANSLATIONFILE);
+        return Urls.create("jar:" + jarFile.toURI() + "!/" + TRANSLATIONFILE, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 }

@@ -19,6 +19,8 @@
  */
 package org.xwiki.test.ui;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -44,19 +46,17 @@ public class Upgrade84FileStoreTest extends UpgradeTest
     private void assertAttachments(String wiki) throws IOException
     {
         // Check migrated attachment
-        URL attachmentURL = new URL(getUtil().getBaseBinURL(wiki) + "download/Attachments/WebHome/attachment.txt");
+        URL attachmentURL = Urls.create(getUtil().getBaseBinURL(wiki) + "download/Attachments/WebHome/attachment.txt", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         assertURLContent("attachment", attachmentURL);
 
         // Check migrated attachment
-        URL attachmentURLWithWhiteSpaces = new URL(
-            getUtil().getBaseBinURL(wiki) + "download/Attachments/WebHome/attachment%20with%20white%20spaces.txt");
+        URL attachmentURLWithWhiteSpaces = Urls.create(getUtil().getBaseBinURL(wiki) + "download/Attachments/WebHome/attachment%20with%20white%20spaces.txt", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         assertURLContent("attachment with white spaces", attachmentURLWithWhiteSpaces);
 
         // Check migrated deleted attachment
-        URL deletedAttachmentURL = new URL(
-            getUtil().getBaseBinURL(wiki) + "downloadrev/Attachments/WebHome/deletedattachment.txt?rev=1.1&rid=1");
+        URL deletedAttachmentURL = Urls.create(getUtil().getBaseBinURL(wiki) + "downloadrev/Attachments/WebHome/deletedattachment.txt?rev=1.1&rid=1", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         assertURLContent("deletedattachment", deletedAttachmentURL);
     }

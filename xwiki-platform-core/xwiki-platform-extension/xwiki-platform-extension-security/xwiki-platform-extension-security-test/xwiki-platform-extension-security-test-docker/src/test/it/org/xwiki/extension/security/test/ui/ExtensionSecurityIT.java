@@ -19,6 +19,8 @@
  */
 package org.xwiki.extension.security.test.ui;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -122,8 +124,8 @@ class ExtensionSecurityIT
     private static String getLocalRestURL(TestUtils setup, DocumentReference testDocumentReference)
         throws MalformedURLException
     {
-        URL originalURL = new URL(setup.getURL(testDocumentReference, "get", ""));
-        URL newURL = new URL(originalURL.getProtocol(), "localhost", originalURL.getPort(), originalURL.getFile());
+        URL originalURL = Urls.create(setup.getURL(testDocumentReference, "get", ""), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
+        URL newURL = Urls.create(originalURL.getProtocol(), "localhost", originalURL.getPort(), originalURL.getFile(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         return newURL.toString();
     }
 

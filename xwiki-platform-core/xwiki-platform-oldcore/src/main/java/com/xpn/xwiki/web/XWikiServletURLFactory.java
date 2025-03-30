@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
@@ -142,7 +144,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
             if (StringUtils.isNotEmpty(protocolConfiguration)) {
                 try {
                     defaultWikiURL =
-                        new URL(protocolConfiguration, this.originalURL.getHost(), this.originalURL.getPort(), "");
+                        Urls.create(protocolConfiguration, this.originalURL.getHost(), this.originalURL.getPort(), "", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 } catch (MalformedURLException e) {
                     LOGGER.warn("The configured protocol [{}] produce an invalid URL: {}", protocolConfiguration,
                         ExceptionUtils.getRootCauseMessage(e));
@@ -331,7 +333,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
 
         URL result;
         try {
-            result = normalizeURL(new URL(getServerURL(xwikidb, context), path.toString()), context);
+            result = normalizeURL(Urls.create(getServerURL(xwikidb, context), path.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), context);
         } catch (MalformedURLException e) {
             // This should not happen
             result = null;
@@ -561,7 +563,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
     private URL buildURL(URL serverUrl, String path, Map<String, Object> queryParameters, XWikiContext context)
     {
         try {
-            URL resultUrl = new URL(serverUrl, path);
+            URL resultUrl = Urls.create(serverUrl, path, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
             if (!queryParameters.isEmpty()) {
                 StringBuilder stringBuilder = new StringBuilder(resultUrl.toExternalForm());
@@ -579,7 +581,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
 
                     currentIndex++;
                 }
-                resultUrl = new URL(stringBuilder.toString());
+                resultUrl = Urls.create(stringBuilder.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             }
             return normalizeURL(resultUrl, context);
         } catch (MalformedURLException | UnsupportedEncodingException e) {
@@ -650,7 +652,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
         path.append("templates");
         addFileName(path, fileName, false, context);
         try {
-            return normalizeURL(new URL(getServerURL(context), path.toString()), context);
+            return normalizeURL(Urls.create(getServerURL(context), path.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), context);
         } catch (MalformedURLException e) {
             // This should not happen
             return null;
@@ -760,7 +762,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
         }
 
         try {
-            return normalizeURL(new URL(getServerURL(xwikidb, context), path.toString()), context);
+            return normalizeURL(Urls.create(getServerURL(xwikidb, context), path.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), context);
         } catch (Exception e) {
             return null;
         }
@@ -885,7 +887,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
         try {
             final URL servurl = getServerURL(context);
             // if use apache mod_proxy we needed to know external host address
-            return normalizeURL(new URL(servurl.getProtocol(), servurl.getHost(), servurl.getPort(), url.getFile()),
+            return normalizeURL(Urls.create(servurl.getProtocol(), servurl.getHost(), servurl.getPort(), url.getFile(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS),
                 context);
         } catch (MalformedURLException e) {
             // This should not happen
@@ -987,7 +989,7 @@ public class XWikiServletURLFactory extends XWikiDefaultURLFactory
         // Remove a potential jsessionid in the URL
         encodedURLAsString = encodedURLAsString.replaceAll(";jsessionid=.*?(?=\\?|$)", "");
 
-        return new URL(encodedURLAsString);
+        return Urls.create(encodedURLAsString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 
     private EntityReferenceResolver<String> getRelativeEntityReferenceResolver()

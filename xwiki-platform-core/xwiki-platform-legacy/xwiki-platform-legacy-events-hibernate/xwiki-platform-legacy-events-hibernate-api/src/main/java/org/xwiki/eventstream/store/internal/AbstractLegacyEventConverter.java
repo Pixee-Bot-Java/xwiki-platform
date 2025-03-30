@@ -19,6 +19,8 @@
  */
 package org.xwiki.eventstream.store.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -139,7 +141,7 @@ public abstract class AbstractLegacyEventConverter implements LegacyEventConvert
         result.setType(e.getType());
         if (StringUtils.isNotBlank(e.getUrl())) {
             try {
-                result.setUrl(new URL(e.getUrl()));
+                result.setUrl(Urls.create(e.getUrl(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
             } catch (MalformedURLException ex) {
                 // Should not happen
             }

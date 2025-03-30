@@ -19,6 +19,8 @@
  */
 package org.xwiki.flamingo.test.ui;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -148,7 +150,7 @@ public class HTMLExportIT extends AbstractTest
 
     private void assertHTMLExportURL(String htmlExportURL, List<PageValidator> validators) throws Exception
     {
-        URL url = new URL(htmlExportURL);
+        URL url = Urls.create(htmlExportURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

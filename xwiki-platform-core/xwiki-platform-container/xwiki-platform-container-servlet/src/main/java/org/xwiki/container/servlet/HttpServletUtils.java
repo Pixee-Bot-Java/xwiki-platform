@@ -19,6 +19,8 @@
  */
 package org.xwiki.container.servlet;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -93,7 +95,7 @@ public final class HttpServletUtils
         }
 
         try {
-            return new URL(baseURL, path.toString());
+            return Urls.create(baseURL, path.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             // Not really supposed to happen
             throw new RuntimeException("XWiki received an invalid URL path or query string", e);
@@ -121,7 +123,7 @@ public final class HttpServletUtils
         appendHostPort(servletRequest, builder);
 
         try {
-            return new URL(builder.toString());
+            return Urls.create(builder.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             // Fallback on whatever was directly received
             return getFinalBaseURL(servletRequest);
@@ -131,8 +133,7 @@ public final class HttpServletUtils
     private static URL getFinalBaseURL(HttpServletRequest servletRequest)
     {
         try {
-            return new URL(servletRequest.getScheme(), servletRequest.getRemoteHost(), servletRequest.getRemotePort(),
-                "");
+            return Urls.create(servletRequest.getScheme(), servletRequest.getRemoteHost(), servletRequest.getRemotePort(), "", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             throw new RuntimeException("XWiki received an invalid URL", e);
         }

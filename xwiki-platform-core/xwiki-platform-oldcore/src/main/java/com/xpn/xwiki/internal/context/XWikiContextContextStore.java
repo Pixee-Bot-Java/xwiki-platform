@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.internal.context;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -389,7 +391,7 @@ public class XWikiContextContextStore extends AbstractContextStore
         URL url = HttpServletUtils.getSourceURL(request);
 
         try {
-            contextStore.put(PROP_REQUEST_BASE, new URL(url.getProtocol(), url.getHost(), url.getPort(), ""));
+            contextStore.put(PROP_REQUEST_BASE, Urls.create(url.getProtocol(), url.getHost(), url.getPort(), "", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         } catch (MalformedURLException e) {
             // Cannot happen
         }

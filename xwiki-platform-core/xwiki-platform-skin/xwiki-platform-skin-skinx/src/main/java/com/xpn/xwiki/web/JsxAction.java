@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -224,7 +226,7 @@ public class JsxAction extends AbstractSxAction
         String sourceURL = extendQueryString(urlFactory.getRequestURL(context).toString(), "minify=false");
         try {
             // Try to return a relative source URL because this is going to be saved in the source map.
-            return urlFactory.getURL(new URL(sourceURL), context);
+            return urlFactory.getURL(Urls.create(sourceURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), context);
         } catch (MalformedURLException e) {
             LOGGER.warn("Failed to convert absolute source URL to relative URL. Root cause is [{}].",
                 ExceptionUtils.getRootCauseMessage(e));

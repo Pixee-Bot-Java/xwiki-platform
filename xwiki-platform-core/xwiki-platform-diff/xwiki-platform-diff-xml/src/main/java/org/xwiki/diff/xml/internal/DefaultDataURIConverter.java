@@ -19,6 +19,8 @@
  */
 package org.xwiki.diff.xml.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -140,9 +142,9 @@ public class DefaultDataURIConverter implements Initializable, Disposable, DataU
         try {
             if (xcontext.getRequest() != null) {
                 URL requestURL = XWiki.getRequestURL(xcontext.getRequest());
-                absoluteURL = new URL(requestURL, url);
+                absoluteURL = Urls.create(requestURL, url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             } else {
-                absoluteURL = new URL(url);
+                absoluteURL = Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             }
         } catch (MalformedURLException | XWikiException e) {
             throw new DiffException(String.format("Failed to resolve [%s] to an absolute URL.", url), e);

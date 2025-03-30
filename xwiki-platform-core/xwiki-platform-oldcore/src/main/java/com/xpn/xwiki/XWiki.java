@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -5263,7 +5265,7 @@ public class XWiki implements EventListener
             String homepage = getConfiguration().getProperty("xwiki.home");
             if (StringUtils.isNotEmpty(homepage)) {
                 try {
-                    return new URL(homepage);
+                    return Urls.create(homepage, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                 } catch (MalformedURLException e) {
                     LOGGER.warn("Invalid main wiki home page URL [{}] configured: {}", homepage,
                         ExceptionUtils.getRootCauseMessage(e));
@@ -5295,8 +5297,7 @@ public class XWiki implements EventListener
                             }
                         }
 
-                        return new URL(protocol != null ? protocol : (port == 443 ? "https" : "http"), server, port,
-                            "");
+                        return Urls.create(protocol != null ? protocol : (port == 443 ? "https" : "http"), server, port, "", Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
                     }
                 }
             } catch (WikiManagerException e) {
@@ -6188,7 +6189,7 @@ public class XWiki implements EventListener
     public String getRefererText(String referer, XWikiContext context)
     {
         try {
-            URL url = new URL(referer);
+            URL url = Urls.create(referer, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             Map<String, SearchEngineRule> searchengines = getSearchEngineRules(context);
             if (searchengines != null) {
                 for (SearchEngineRule senginerule : searchengines.values()) {

@@ -19,6 +19,8 @@
  */
 package org.xwiki.export.pdf.internal.job;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -82,7 +84,7 @@ public class PrintPreviewURLBuilder
         hash = URLDecoder.decode(hash, StandardCharsets.UTF_8);
 
         DocumentReference documentReference = this.documentAccessBridge.getCurrentDocumentReference();
-        return new URL(this.documentAccessBridge.getDocumentURL(documentReference, "export", queryString, hash, true));
+        return Urls.create(this.documentAccessBridge.getDocumentURL(documentReference, "export", queryString, hash, true), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 
     private String getPrintPreviewQueryString(String originalQueryString, List<String> pdfExportJobId, String locale)

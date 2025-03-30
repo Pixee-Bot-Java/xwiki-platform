@@ -19,6 +19,8 @@
  */
 package org.xwiki.livedata.internal.livetable;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.util.Collections;
 
@@ -81,7 +83,7 @@ public class LiveTableResultsURLDocumentReferenceResolver
         XWikiContext xcontext = this.xcontextProvider.get();
 
         try {
-            URL url = new URL(xcontext.getURL(), liveTableResultsURL);
+            URL url = Urls.create(xcontext.getURL(), liveTableResultsURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             ExtendedURL extendedURL = new ExtendedURL(url, xcontext.getRequest().getContextPath());
             ResourceType type = this.typeResolver.resolve(extendedURL, Collections.emptyMap());
             ResourceReference reference = this.resourceResolver.resolve(extendedURL, type, Collections.emptyMap());

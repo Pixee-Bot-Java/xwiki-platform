@@ -19,6 +19,8 @@
  */
 package org.xwiki.localization.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +118,7 @@ public abstract class AbstractURLResourceTranslationBundle extends AbstractCache
         }
 
         try {
-            return new URL(localeURL);
+            return Urls.create(localeURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             // Should never happen
             return null;

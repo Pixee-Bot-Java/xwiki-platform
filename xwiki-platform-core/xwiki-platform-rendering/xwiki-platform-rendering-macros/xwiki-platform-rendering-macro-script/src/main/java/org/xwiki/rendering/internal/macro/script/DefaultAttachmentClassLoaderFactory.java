@@ -19,6 +19,8 @@
  */
 package org.xwiki.rendering.internal.macro.script;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,7 +79,7 @@ public class DefaultAttachmentClassLoaderFactory implements AttachmentClassLoade
     {
         List<URL> urls = new ArrayList<>();
         for (URI uri : extractURIs(jarURLs)) {
-            urls.add(new URL(null, uri.toString(), this.streamHandlerFactory.createURLStreamHandler(uri.getScheme())));
+            urls.add(Urls.create(null, uri.toString(), this.streamHandlerFactory.createURLStreamHandler(uri.getScheme()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         }
 
         return new ExtendedURLClassLoader(urls.toArray(new URL[0]), parent, this.streamHandlerFactory);
@@ -88,8 +90,7 @@ public class DefaultAttachmentClassLoaderFactory implements AttachmentClassLoade
     {
         for (URI uri : extractURIs(jarURLs)) {
             if (uri.getScheme().equalsIgnoreCase(this.attachmentJarHandler.getProtocol())) {
-                source.addURL(new URL(null, uri.toString(), 
-                    this.streamHandlerFactory.createURLStreamHandler(uri.getScheme())));
+                source.addURL(Urls.create(null, uri.toString(), this.streamHandlerFactory.createURLStreamHandler(uri.getScheme()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
             } else {
                 source.addURL(uri.toURL());
             }

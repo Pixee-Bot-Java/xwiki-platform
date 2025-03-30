@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -218,7 +220,7 @@ public class ExportURLFactory extends XWikiServletURLFactory
 
             addFileName(newPath, filename, false, context);
 
-            return new URL(newPath.toString());
+            return Urls.create(newPath.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (Exception e) {
             LOGGER.error("Failed to create skin URL", e);
         }
@@ -303,7 +305,7 @@ public class ExportURLFactory extends XWikiServletURLFactory
 
             newPath.append(filePath);
 
-            skinURL = new URL(newPath.toString());
+            skinURL = Urls.create(newPath.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (Exception e) {
             LOGGER.error("Failed to create skin URL", e);
         }
@@ -442,7 +444,7 @@ public class ExportURLFactory extends XWikiServletURLFactory
 
             addFileName(newPath, filename, false, context);
 
-            return new URL(newPath.toString());
+            return Urls.create(newPath.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (Exception e) {
             LOGGER.error("Failed to create skin URL", e);
         }
@@ -493,7 +495,7 @@ public class ExportURLFactory extends XWikiServletURLFactory
                     newpath.append(anchor);
                 }
 
-                return new URL(newpath.toString());
+                return Urls.create(newpath.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             }
         } catch (Exception e) {
             LOGGER.error("Failed to create page URL", e);
@@ -554,7 +556,7 @@ public class ExportURLFactory extends XWikiServletURLFactory
         String relativeURLPath = new File("").toURI().relativize(new File(path).toURI()).toString();
         newPath.append(relativeURLPath);
 
-        return new URL(newPath.toString());
+        return Urls.create(newPath.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 
     @Override

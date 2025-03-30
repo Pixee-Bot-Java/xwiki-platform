@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.plugin.feed;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -174,7 +176,7 @@ public class XWikiFeedFetcher extends AbstractFeedFetcher
 
                 syndFeedInfo = buildSyndFeedInfo(feedUrl, urlStr, method, feed, statusCode);
 
-                cache.setFeedInfo(new URL(urlStr), syndFeedInfo);
+                cache.setFeedInfo(Urls.create(urlStr, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), syndFeedInfo);
 
                 // the feed may have been modified to pick up cached values
                 // (eg - for delta encoding)
@@ -216,7 +218,7 @@ public class XWikiFeedFetcher extends AbstractFeedFetcher
         syndFeedInfo = new SyndFeedInfo();
 
         // this may be different to feedURL because of 3XX redirects
-        syndFeedInfo.setUrl(new URL(urlStr));
+        syndFeedInfo.setUrl(Urls.create(urlStr, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
         syndFeedInfo.setId(feedUrl.toString());
 
         Header imHeader = method.getResponseHeader("IM");

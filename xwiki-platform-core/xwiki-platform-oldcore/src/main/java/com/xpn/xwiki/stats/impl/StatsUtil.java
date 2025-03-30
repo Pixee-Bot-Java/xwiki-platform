@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.stats.impl;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -715,7 +717,7 @@ public final class StatsUtil
         String referer = context.getRequest().getHeader(REQPROP_REFERER);
 
         try {
-            URL url = new URL(referer);
+            URL url = Urls.create(referer, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             URL baseurl = context.getURL();
             if (baseurl.getHost().equals(url.getHost())) {
                 referer = null;
