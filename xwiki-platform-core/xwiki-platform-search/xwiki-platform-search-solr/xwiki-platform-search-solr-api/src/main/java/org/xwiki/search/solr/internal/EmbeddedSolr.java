@@ -19,6 +19,7 @@
  */
 package org.xwiki.search.solr.internal;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -388,7 +389,7 @@ public class EmbeddedSolr extends AbstractSolr implements Disposable, Initializa
     private void copyCoreConfiguration(InputStream stream, Path corePath, boolean skipCoreProperties, Set<String> force)
         throws IOException
     {
-        try (ZipInputStream zstream = new ZipInputStream(stream)) {
+        try (ZipInputStream zstream = ZipSecurity.createHardenedInputStream(stream)) {
             for (ZipEntry entry = zstream.getNextEntry(); entry != null; entry = zstream.getNextEntry()) {
                 Path targetPath = corePath.resolve(entry.getName());
                 if (entry.isDirectory()) {

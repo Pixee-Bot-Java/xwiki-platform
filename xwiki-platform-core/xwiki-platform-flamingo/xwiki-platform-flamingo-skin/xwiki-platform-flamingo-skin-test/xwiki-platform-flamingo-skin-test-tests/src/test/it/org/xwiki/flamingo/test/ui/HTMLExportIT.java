@@ -19,6 +19,7 @@
  */
 package org.xwiki.flamingo.test.ui;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -153,7 +154,7 @@ public class HTMLExportIT extends AbstractTest
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         InputStream is = connection.getInputStream();
-        ZipInputStream zis = new ZipInputStream(is);
+        ZipInputStream zis = ZipSecurity.createHardenedInputStream(is);
 
         boolean foundResourcesDirectory = false;
         boolean foundSkinsDirectory = false;
