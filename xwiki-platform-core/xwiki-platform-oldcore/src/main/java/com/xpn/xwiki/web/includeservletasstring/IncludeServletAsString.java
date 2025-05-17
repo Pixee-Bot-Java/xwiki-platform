@@ -19,6 +19,7 @@
  */
 package com.xpn.xwiki.web.includeservletasstring;
 
+import static io.github.pixee.security.jakarta.PathValidator.validateDispatcherPath;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -48,7 +49,7 @@ public class IncludeServletAsString
             LOGGER.debug("Including url \"" + url + "\"...");
         }
 
-        RequestDispatcher requestDispatcher = servletRequest.getRequestDispatcher(url);
+        RequestDispatcher requestDispatcher = servletRequest.getRequestDispatcher(validateDispatcherPath(url));
 
         if (requestDispatcher == null) {
             IllegalArgumentException iae =
