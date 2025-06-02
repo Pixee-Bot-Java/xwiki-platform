@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +134,7 @@ public abstract class AbstractSxExportURLFactoryActionHandler implements ExportU
         if (!targetDirectory.exists()) {
             targetDirectory.mkdirs();
         }
-        File targetLocation = File.createTempFile(getSxPrefix(), "." + getFileSuffix(), targetDirectory);
+        File targetLocation = Files.createTempFile(targetDirectory.toPath(), getSxPrefix(), "." + getFileSuffix()).toFile();
         FileUtils.writeStringToFile(targetLocation, content);
 
         // Rewrite the URL

@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -272,7 +273,7 @@ public class MailSenderPlugin extends XWikiDefaultPlugin
     {
         String name = attachment.getFilename();
         byte[] stream = attachment.getContent();
-        File temp = new TemporaryFile(File.createTempFile("tmpfile", ".tmp"));
+        File temp = new TemporaryFile(Files.createTempFile("tmpfile", ".tmp").toFile());
         FileOutputStream fos = new FileOutputStream(temp);
         fos.write(stream);
         fos.close();

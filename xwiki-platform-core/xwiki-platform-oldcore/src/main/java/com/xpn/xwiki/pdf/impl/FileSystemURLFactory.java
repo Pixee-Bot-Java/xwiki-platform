@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -302,7 +303,7 @@ public class FileSystemURLFactory extends XWikiServletURLFactory
         File tempdir = (File) context.get("pdfexportdir");
         String prefix = "pdf";
         try {
-            return File.createTempFile(prefix, null, tempdir);
+            return Files.createTempFile(tempdir.toPath(), prefix, null).toFile();
         } catch (IOException e) {
             throw new IOException(String.format("Failed to create temporary file during PDF export, for key [%s], "
                 + "prefix [%s], in directory [%s] (exist: [%s])", key, prefix, tempdir, tempdir.exists()), e);

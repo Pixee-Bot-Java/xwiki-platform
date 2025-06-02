@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -99,7 +100,7 @@ public class FilterIT extends AbstractTest
 
         // Set output
         page.setOutputFilter("filter+xml");
-        File tmp = File.createTempFile("result", ".xml");
+        File tmp = Files.createTempFile("result", ".xml").toFile();
         page.setTarget("file:" + tmp.getAbsolutePath());
 
         // Start conversion

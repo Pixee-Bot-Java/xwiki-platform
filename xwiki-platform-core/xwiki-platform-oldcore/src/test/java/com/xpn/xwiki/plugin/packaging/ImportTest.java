@@ -21,6 +21,7 @@
 package com.xpn.xwiki.plugin.packaging;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -138,7 +139,7 @@ public class ImportTest extends AbstractPackageTest
 
         // Store the extension in the local repository
         DefaultLocalExtension localExtension = new DefaultLocalExtension(null, extensionId, "xar");
-        File file = File.createTempFile("temp", ".xar");
+        File file = Files.createTempFile("temp", ".xar").toFile();
         FileUtils.writeByteArrayToFile(file, zipFile);
         localExtension.setFile(file);
         LocalExtensionRepository localeRepository =
