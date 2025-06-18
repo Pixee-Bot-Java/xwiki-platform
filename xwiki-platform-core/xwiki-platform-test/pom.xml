@@ -35,6 +35,7 @@
     <selenium.version>4.20.0</selenium.version>
     <!-- Don't run backward-compatibility checks in test modules since we don't consider them as public APIs -->
     <xwiki.revapi.skip>true</xwiki.revapi.skip>
+    <versions.java-security-toolkit>1.2.1</versions.java-security-toolkit>
   </properties>
   <modules>
     <!-- Sorted Alphabetically -->
@@ -54,4 +55,13 @@
       </modules>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.github.pixee</groupId>
+        <artifactId>java-security-toolkit</artifactId>
+        <version>${versions.java-security-toolkit}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>

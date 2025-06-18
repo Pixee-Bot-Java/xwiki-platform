@@ -20,6 +20,7 @@
 
 package org.xwiki.test.escaping.framework;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -488,7 +489,7 @@ public abstract class AbstractEscapingTest implements FileTest
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new ByteArrayInputStream(AbstractEscapingTest.getUrlContent(url).getContent())));
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.find() && matcher.groupCount() == 2) {
                     return matcher.group(2);

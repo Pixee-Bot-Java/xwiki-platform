@@ -122,6 +122,10 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-resolver-provider</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.github.pixee</groupId>
+      <artifactId>java-security-toolkit</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

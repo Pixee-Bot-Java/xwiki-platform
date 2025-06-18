@@ -19,6 +19,7 @@
  */
 package org.xwiki.test.escaping.framework;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -113,7 +114,7 @@ public abstract class AbstractManualTest extends AbstractEscapingTest
     {
         BufferedReader reader = new BufferedReader(AbstractEscapingTest.getUrlContent(url).getContentReader());
         String line;
-        while ((line = reader.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
             Assert.assertFalse("The page contains a error trace", line.matches("^.*<pre\\s+class=\"xwikierror\">.*$"));
         }
     }

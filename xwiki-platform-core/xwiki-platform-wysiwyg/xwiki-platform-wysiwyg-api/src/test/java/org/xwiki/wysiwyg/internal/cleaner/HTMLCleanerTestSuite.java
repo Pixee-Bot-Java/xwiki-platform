@@ -19,6 +19,7 @@
  */
 package org.xwiki.wysiwyg.internal.cleaner;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -234,12 +235,12 @@ public class HTMLCleanerTestSuite extends Suite
         BufferedReader reader = new BufferedReader(new InputStreamReader(source));
         List<String> testNames = new ArrayList<String>();
         try {
-            String line = reader.readLine();
+            String line = BoundedLineReader.readLine(reader, 5_000_000);
             while (line != null) {
                 if (!line.startsWith(COMMENT_LINE_PREFIX)) {
                     testNames.add(line.trim());
                 }
-                line = reader.readLine();
+                line = BoundedLineReader.readLine(reader, 5_000_000);
             }
         } finally {
             reader.close();
@@ -260,17 +261,17 @@ public class HTMLCleanerTestSuite extends Suite
         BufferedReader reader = new BufferedReader(new InputStreamReader(source));
         try {
             StringBuilder input = new StringBuilder();
-            String line = reader.readLine();
+            String line = BoundedLineReader.readLine(reader, 5_000_000);
             while (line != null && !line.equals(INPUT_EXPECTED_SEPARATOR)) {
                 appendLine(input, line);
-                line = reader.readLine();
+                line = BoundedLineReader.readLine(reader, 5_000_000);
             }
             StringBuilder expected = new StringBuilder();
             // Skip the line that separates the input from the expected HTML.
-            line = reader.readLine();
+            line = BoundedLineReader.readLine(reader, 5_000_000);
             while (line != null) {
                 appendLine(expected, line);
-                line = reader.readLine();
+                line = BoundedLineReader.readLine(reader, 5_000_000);
             }
             return new String[] {testResourceName, input.toString(), expected.toString()};
         } finally {

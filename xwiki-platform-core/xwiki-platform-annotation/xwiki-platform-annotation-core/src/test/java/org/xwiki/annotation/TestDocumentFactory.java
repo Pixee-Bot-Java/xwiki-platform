@@ -19,6 +19,7 @@
  */
 package org.xwiki.annotation;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -85,7 +86,7 @@ public class TestDocumentFactory
         String line = null;
         String currentKey = null;
         StringBuffer currentValue = new StringBuffer();
-        while ((line = reader.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
             if (line.startsWith("#")) {
                 // comment, ignore
                 continue;
@@ -152,7 +153,7 @@ public class TestDocumentFactory
         String line = null;
         String[] properties = new String[7];
         int propIndex = 0;
-        while ((line = stringReader.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(stringReader, 5_000_000)) != null) {
             properties[propIndex] = line;
             propIndex++;
         }
