@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.stats.impl;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -102,7 +104,7 @@ public class RefererStats extends XWikiStats
         URL url = null;
 
         try {
-            url = new URL(getReferer());
+            url = Urls.create(getReferer(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         } catch (MalformedURLException e) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Failed to construct URL from referer", e);

@@ -19,6 +19,8 @@
  */
 package org.xwiki.livedata.internal.livetable;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class URLQueryStringParser
     public Map<String, List<String>> parse(String url) throws Exception
     {
         URL baseURL = new URL("http://www.xwiki.org");
-        String queryString = new URL(baseURL, url).getQuery();
+        String queryString = Urls.create(baseURL, url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).getQuery();
         Map<String, List<String>> parameters = new HashMap<>();
         for (String entry : queryString.split("&")) {
             String[] parts = entry.split("=", 2);

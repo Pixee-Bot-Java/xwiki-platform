@@ -19,6 +19,8 @@
  */
 package org.xwiki.office.viewer.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -318,7 +320,7 @@ public class DefaultOfficeResourceViewer implements OfficeResourceViewer, Initia
         XDOMOfficeDocument result = null;
 
         if (resourceReference.getType().equals(ResourceType.URL)) {
-            URL url = new URL(resourceReference.getReference());
+            URL url = Urls.create(resourceReference.getReference(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             if (!ALLOWED_PROTOCOLS.contains(url.getProtocol())) {
                 throw new Exception(
                     String.format("The requested resource [%s] uses a protocol [%s] that is not supported.", url,

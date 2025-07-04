@@ -19,6 +19,8 @@
  */
 package org.xwiki.flamingo.test.docker;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.util.Map;
 
@@ -66,7 +68,7 @@ class PDFExportIT
         // property which was mistaken with the title property of XWiki.PDFClass before XWIKI-7048 was fixed. The gadget
         // title contains Velocity code that isn't wrapped in a Velocity macro so it is printed as is if not rendered in
         // the right context.
-        URL pdfURL = new URL(createURL("xwiki/bin/export/Dashboard/WebHome?format=pdf"));
+        URL pdfURL = Urls.create(createURL("xwiki/bin/export/Dashboard/WebHome?format=pdf"), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         try (PDFDocument document = new PDFDocument(pdfURL)) {
             String text = document.getText();
             // Note: This is the title of the Pages gadget when it's working
@@ -84,7 +86,7 @@ class PDFExportIT
     @Test
     void exportContentWithAttachmentLink() throws Exception
     {
-        URL pdfURL = new URL(createURL("xwiki/bin/export/Sandbox/WebHome?format=pdf"));
+        URL pdfURL = Urls.create(createURL("xwiki/bin/export/Sandbox/WebHome?format=pdf"), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         try (PDFDocument document = new PDFDocument(pdfURL)) {
             Map<String, String> links = document.getLinks();
             assertTrue(links.containsKey("XWikiLogo.png"));
@@ -105,7 +107,7 @@ class PDFExportIT
     void exportTableOfContents() throws Exception
     {
         URL pdfURL =
-            new URL(createURL("xwiki/bin/export/Sandbox/WebHome?format=pdf&pdftoc=1&attachments=1&pdfcover=0"));
+            Urls.create(createURL("xwiki/bin/export/Sandbox/WebHome?format=pdf&pdftoc=1&attachments=1&pdfcover=0"), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         try (PDFDocument document = new PDFDocument(pdfURL)) {
             Map<String, String> links = document.getLinksFromPage(0);
             // Make sure we have a Table of Contents.

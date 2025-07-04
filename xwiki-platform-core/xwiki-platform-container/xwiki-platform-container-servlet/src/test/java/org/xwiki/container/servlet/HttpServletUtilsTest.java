@@ -19,6 +19,8 @@
  */
 package org.xwiki.container.servlet;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -42,7 +44,7 @@ public class HttpServletUtilsTest
     private HttpServletRequest request(String urlString, Map<String, String>... headerGroup)
         throws MalformedURLException
     {
-        URL url = new URL(urlString);
+        URL url = Urls.create(urlString, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
 

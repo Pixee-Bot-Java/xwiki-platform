@@ -19,6 +19,8 @@
  */
 package org.xwiki.classloader.internal.protocol.attachmentjar;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -62,7 +64,7 @@ public class AttachmentURLStreamHandlerTest
     @Test
     void invalidAttachmentJarURL() throws Exception
     {
-        URL url = new URL(null, "http://invalid/url", this.handler);
+        URL url = Urls.create(null, "http://invalid/url", this.handler, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         try {
             url.openConnection();
@@ -76,7 +78,7 @@ public class AttachmentURLStreamHandlerTest
     @Test
     void attachmentJarURL() throws Exception
     {
-        URL url = new URL(null, "attachmentjar://Space.Page@filename", this.handler);
+        URL url = Urls.create(null, "attachmentjar://Space.Page@filename", this.handler, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
         final AttachmentReference attachmentReference = new AttachmentReference("filename",
             new DocumentReference("wiki", "space", "page"));
@@ -104,7 +106,7 @@ public class AttachmentURLStreamHandlerTest
     @Test
     void attachmentJarURLWithEncodedChars() throws Exception
     {
-        URL url = new URL(null, "attachmentjar://some%20page", this.handler);
+        URL url = Urls.create(null, "attachmentjar://some%20page", this.handler, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         url.openConnection();
         verify(this.arf).resolve("some page");
     }

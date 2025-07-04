@@ -19,6 +19,8 @@
  */
 package org.xwiki.repository.internal.resources;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.ProxySelector;
 import java.net.URI;
@@ -138,7 +140,7 @@ public class ExtensionVersionFileRESTResource extends AbstractExtensionRESTResou
             response = getAttachmentResponse(xwikiAttachment);
         } else if (ResourceType.URL.equals(resourceReference.getType())) {
             // It's an URL
-            URL url = new URL(resourceReference.getReference());
+            URL url = Urls.create(resourceReference.getReference(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
             DefaultHttpClient httpClient = new DefaultHttpClient();
 

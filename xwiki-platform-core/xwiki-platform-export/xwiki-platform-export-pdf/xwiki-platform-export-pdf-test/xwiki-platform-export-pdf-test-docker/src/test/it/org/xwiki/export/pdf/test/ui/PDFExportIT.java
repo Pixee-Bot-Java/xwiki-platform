@@ -19,6 +19,8 @@
  */
 package org.xwiki.export.pdf.test.ui;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1270,8 +1272,8 @@ class PDFExportIT
 
     private URL getHostURL(TestConfiguration testConfiguration) throws Exception
     {
-        return new URL(String.format("http://%s:%d", testConfiguration.getServletEngine().getIP(),
-            testConfiguration.getServletEngine().getPort()));
+        return Urls.create(String.format("http://%s:%d", testConfiguration.getServletEngine().getIP(),
+            testConfiguration.getServletEngine().getPort()), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 
     private PDFDocument export(PDFExportOptionsModal exportOptions, TestConfiguration testConfiguration)

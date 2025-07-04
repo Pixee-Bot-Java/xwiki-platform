@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.web;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -115,7 +117,7 @@ public class LegacyActionServlet extends HttpServlet
     {
         String url = req.getRequestURL().toString();
         try {
-            ExtendedURL extendedURL = new ExtendedURL(new URL(url), req.getContextPath());
+            ExtendedURL extendedURL = new ExtendedURL(Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), req.getContextPath());
 
             ResourceType type = this.typeResolver.resolve(extendedURL, Collections.<String, Object>emptyMap());
 

@@ -54,5 +54,9 @@
       <groupId>org.apache.pdfbox</groupId>
       <artifactId>pdfbox</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.github.pixee</groupId>
+      <artifactId>java-security-toolkit</artifactId>
+    </dependency>
   </dependencies>
 </project>

@@ -19,6 +19,8 @@
  */
 package com.xpn.xwiki.render.groovy;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandlerFactory;
@@ -69,7 +71,7 @@ public class XWikiPageClassLoader extends URLClassLoader
                 if (filename.endsWith(".jar")) {
                     String downloadURL = doc.getExternalAttachmentURL(filename, "download", context);
                     try {
-                        addURL(new URL(downloadURL));
+                        addURL(Urls.create(downloadURL, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS));
                         if (LOGGER.isDebugEnabled()) {
                             LOGGER.debug("Adding [" + downloadURL + "] JAR from page [" + jarWikiPage
                                 + "] to Groovy classloader");

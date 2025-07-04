@@ -19,6 +19,8 @@
  */
 package org.xwiki.url.internal.standard;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.net.URL;
 
 import org.junit.Before;
@@ -135,7 +137,7 @@ public class DomainWikiReferenceExtractorTest
 
     private void testAndAssert(String urlToTest, String expectedWikiId) throws Exception
     {
-        ExtendedURL url = new ExtendedURL(new URL(urlToTest), "xwiki");
+        ExtendedURL url = new ExtendedURL(Urls.create(urlToTest, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS), "xwiki");
         // Remove the resource type (i.e. the first segment) since this is what is expected by the extractor
         url.getSegments().remove(0);
         WikiReference wikiReference = this.mocker.getComponentUnderTest().extract(url);

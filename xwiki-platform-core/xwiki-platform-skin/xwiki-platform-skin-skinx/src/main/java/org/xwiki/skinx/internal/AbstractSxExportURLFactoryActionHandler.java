@@ -19,6 +19,8 @@
  */
 package org.xwiki.skinx.internal;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -150,7 +152,7 @@ public abstract class AbstractSxExportURLFactoryActionHandler implements ExportU
         path.append(URL_PATH_SEPARATOR);
         path.append(encodeURLPart(targetLocation.getName()));
 
-        return new URL(path.toString());
+        return Urls.create(path.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
     }
 
     protected String getContent(SxSource sxSource, FilesystemExportContext exportContext)

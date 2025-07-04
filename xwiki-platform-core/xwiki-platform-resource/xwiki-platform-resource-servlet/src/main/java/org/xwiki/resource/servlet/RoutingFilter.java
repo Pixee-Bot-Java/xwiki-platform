@@ -19,6 +19,8 @@
  */
 package org.xwiki.resource.servlet;
 
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -200,9 +202,9 @@ public class RoutingFilter implements Filter
             StringBuffer requestURL = request.getRequestURL();
             String qs = request.getQueryString();
             if (!StringUtils.isEmpty(qs)) {
-                url = new URL(requestURL.toString() + "?" + qs);
+                url = Urls.create(requestURL.toString() + "?" + qs, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             } else {
-                url = new URL(requestURL.toString());
+                url = Urls.create(requestURL.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             }
         } catch (MalformedURLException e) {
             // Shouldn't happen normally!
